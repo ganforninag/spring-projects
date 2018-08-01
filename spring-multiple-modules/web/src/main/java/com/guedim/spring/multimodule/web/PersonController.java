@@ -21,7 +21,7 @@ public class PersonController {
 		return "Greetings from Spring Boot!";
 	}
 
-	@GetMapping("/person")
+	@GetMapping("${person_path}")
 	public List<Person> findAll() {
 		return service.findAll();
 	}
