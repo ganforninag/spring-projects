@@ -9,6 +9,10 @@
     </parent>
 	
     <artifactId>repo</artifactId>
+
+    <properties>
+        <hibernate-tools-maven-plugin.version>0.1.1</hibernate-tools-maven-plugin.version>
+    </properties>
     
 	<dependencies>
         <dependency>
@@ -19,7 +23,82 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.stadler</groupId>
+                <artifactId>hibernate-tools-maven-plugin</artifactId>
+                <version>${hibernate-tools-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>Display Help</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>help</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>Entity generation</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>hbm2java</goal>
+                        </goals>
+                        <configuration>
+                            <templatePath>${project.basedir}/src/main/resources/templates/</templatePath>
+                            <!-- Defaults: -->
+                            <!--<outputDirectory>${project.build.directory}/generated-sources/</outputDirectory>-->
+                            <outputDirectory>${project.basedir}/src/main/java/com/guedim/spring/multimodule/repo/generated-resources/</outputDirectory>
+                            <ejb3>true</ejb3>
+                            <jdk5>true</jdk5>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Schema generation</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Defaults:-->
+                            <!--Possible targetType: SCRIPT (default), STDOUT, DATABASE-->
+                            <!--<targetTypes>-->
+                            <!--<param>SCRIPT</param>-->
+                            <!--<param>STDOUT</param>-->
+                            <!--<param>DATABASE</param>-->
+                            <!--</targetTypes>-->
+                            <!--<outputDirectory>${project.build.directory}/generated-resources/</outputDirectory>-->
+                            <outputDirectory>${project.basedir}/src/main/java/com/guedim/spring/multimodule/repo/generated-resources/</outputDirectory>
+                            <!--Possible schemaExportAction: CREATE (default), DROP, BOTH-->
+                            <!--<schemaExportAction>CREATE</schemaExportAction>-->
+                            <!--<outputFileName>schema.ddl</outputFileName>-->
+                            <!--<delimiter>;</delimiter>-->
+                            <!--<haltOnError>true</haltOnError>-->
+                            <format>true</format>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <revengFile>${project.basedir}/src/main/resources/hibernate.reveng.xml</revengFile>
+                    <!-- Defaults:-->
+                    <!--<packageName></packageName>-->
+                    <configFile>${project.basedir}/src/main/resources/hibernate.cfg.xml</configFile>
+                    <!--<detectManyToMany>true</detectManyToMany>-->
+                    <!--<detectOneToOne>true</detectOneToOne>-->
+                    <!--<detectOptimisticLock>true</detectOptimisticLock>-->
+                    <!--<createCollectionForForeignKey>true</createCollectionForForeignKey>-->
+                    <!--<createManyToOneForForeignKey>true</createManyToOneForForeignKey>-->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.2.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>
