@@ -1,13 +1,22 @@
 ${pojo.getPackageDeclaration()}
-// Generated ${date} by jlganfornina ${version}
 
 <#assign classbody>
-    <#include "PojoTypeDeclaration.ftl"/> {
-
+    <#include "PojoTypeDeclaration.ftl"/>
+{
     <#if !pojo.isInterface()>
+
+    // FIELDS
+    /////////
+
         <#include "PojoFields.ftl"/>
 
+    // CONSTRUCTORS
+    ///////////////
+
         <#include "PojoConstructors.ftl"/>
+
+    // METHODS
+    //////////
 
         <#include "PojoPropertyAccessors.ftl"/>
 
@@ -16,6 +25,10 @@ ${pojo.getPackageDeclaration()}
         <#include "PojoEqualsHashcode.ftl"/>
 
     <#else>
+
+    // METHODS
+    //////////
+
         <#include "PojoInterfacePropertyAccessors.ftl"/>
 
     </#if>
